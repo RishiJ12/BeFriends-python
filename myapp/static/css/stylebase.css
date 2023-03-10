@@ -1,0 +1,26 @@
+h2{
+    position: absolute;  
+    margin-left: 960px;
+}
+button {
+    margin-top: 6px;
+    margin-left: 950px;
+    background-color: rgb(0, 153, 255);
+}
+body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+.bg{
+    
+    height: 100%;
+    background-image:url(bg.png);
+    background-size: cover;
+    background-repeat: repeat-x;
+    background-position: center;
+}
+li a:hover:not(.active) {
+    background-color: #e3e7e5;
+  }
