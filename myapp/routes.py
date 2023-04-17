@@ -1,4 +1,3 @@
-
 from os import error
 from re import S
 from flask import escape
@@ -8,15 +7,14 @@ from myapp import myobj
 from myapp import db
 from myapp.loginforms import LoginForm
 from myapp.deleteforms import DeleteForm
-from myapp.models import User
+from myapp.eventforms import EventForm
+from myapp.models import User, Event
 from myapp.registerforms import RegisterForm
 from flask import render_template, escape, flash, redirect,request, send_file
-from markdown import markdown
 from flask_login import UserMixin,login_user,LoginManager,login_required,logout_user,current_user
 from datetime import datetime
 from io import BytesIO
-import pdfkit
-from werkzeug.utils import secure_filename
+#from werkzeug.utils import secure_filename
 
 @myobj.route("/")
 def home():
@@ -104,6 +102,47 @@ def register():
                 flash('Plese sign up with your SJSU email')
         
     return render_template('/register.html', form = form)
+
+@myobj.route('/createEvent/', methods=['GET', 'POST'])
+@login_required
+def createEvent():
+    form = EventForm()
+    eventname = ""
+    if form.validate_on_submit():
+        #flash(f'{form.username.data} registered succesfully')
+        if request.method == 'POST':
+            eventName = request.form['eventName']
+            className = request.form['className']
+            date = request.form['date']
+            description = request.form['description']
+            location = request.form['location']
+            current = datetime.now()
+            add_event = Event(eventName=eventName,className=className, description=description,location = location,date=date,date_created = current,user_id = current_user.id,)
+            db.session.add(add_event)
+            db.session.commit()
+            return redirect('/event')
+            
+    return render_template('/createEvent.html', form = form)
+@myobj.route("/event", methods=['GET', 'POST'])
+@login_required
+def event_dashboard():
+    
+    #form = SearchForm()
+    note_id = None
+    eventname = ""
+    date = ""
+    description = ""
+    location = ""
+    events = Event.query.all()
+    for event in events:
+        #note_id = note.user_id
+        eventname = event.eventName
+        date = event.date
+        description = event.description
+        location = event.location
+    return render_template('event.html',events=events)
+
+
 
 @myobj.route('/delete/', methods=['GET', 'POST'])
 @login_required

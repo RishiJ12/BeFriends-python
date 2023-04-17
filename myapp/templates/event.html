@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<link href = "{{url_for('static',filename='css/event.css')}}" rel="stylesheet">
+  <head>
+    <title>Events Page</title>    
+  </head>
+  <body>
+    <h1>Upcoming Events</h1>
+    <br>
+    <br>
+    {% for event in events %}
+    <div class="event">
+      <h2>{{event.eventName}}</h2>
+      <h3>{{event.className}}</h3>
+      <p>{{event.date}}</p>
+      <p>{{event.description}}</p>
+      <p> {{event.location}} </p>
+    </div>
+    {% endfor %}
+
+    
+  </body>
+
+{% endblock %}

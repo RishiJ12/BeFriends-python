@@ -7,6 +7,8 @@
 
     </head>
     <body>
+    </section class = "section-navbar">
+
         <nav class="navbar navbar-expand-lg navbar-blue bg-blue">
           <div class="container-fluid">
             <a class="navbar-brand" href="{{url_for('study')}}">BeFriends</a>
@@ -27,7 +29,8 @@
       
                     <li><a class="dropdown-item" href="{{url_for('delete_account')}}">Delete Account</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Coming soon</a></li>
+                    <li><a class="dropdown-item" href="{{url_for('createEvent')}}">Create Event</a></li>
+                    <li><a class="dropdown-item" href="{{url_for('event_dashboard')}}">Event</a></li>
                   </ul>
                 </li>
               </ul>
@@ -43,7 +46,8 @@
             </div>
           </div>
         </div>
-        </nav>    
+        </nav>
+      </section>    
       {% with messages = get_flashed_messages() %}
       {% if messages %}
       <ul>

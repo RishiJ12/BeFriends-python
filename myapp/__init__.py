@@ -5,12 +5,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_ckeditor import CKEditor
-from flaskext.markdown import Markdown
+#from flaskext.markdown import Markdown
+#from flask_script import Manager
 
 # create Flask class object named myobj
 myobj = Flask(__name__,static_url_path="", static_folder="static")
 ckeditor =  CKEditor(myobj)
-Markdown(myobj, extensions=['fenced_code'],auto_escape=True)
+#Markdown(myobj, extensions=['fenced_code'],auto_escape=True)
 #PageDown(myobj)
 # Flask login manager
 login_manager = LoginManager()
@@ -28,5 +29,9 @@ myobj.config.from_mapping(
 
 db = SQLAlchemy(myobj)
 migrate = Migrate(myobj,db)
+from myapp import models,routes
+from .models import User, Event
+with myobj.app_context():
+    db.create_all()
 
-from myapp import routes, models
+
