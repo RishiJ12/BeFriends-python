@@ -10,3 +10,11 @@ class DeleteForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     password_hash = PasswordField('Password',validators=[DataRequired()])
     delete = SubmitField('Submit')
+
+class DeleteEventForm(FlaskForm):
+    '''
+    Create form filed for the purpose of delete account information.
+        Parameters:
+            FlaskForm : A form parameter from flask_wtf
+    '''
+    delete = SubmitField('Delete')

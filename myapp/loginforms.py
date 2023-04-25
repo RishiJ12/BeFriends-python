@@ -9,10 +9,10 @@ class LoginForm(FlaskForm):
             FlaskForm : A form parameter from flask_wtf
     '''
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired()])
+    #email = StringField('Email', validators=[DataRequired()])
     password_hash = PasswordField('Password',validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
-    submit = SubmitField('Sign in')
+    #remember = BooleanField('Remember Me')
+    submit = SubmitField('Log in')
 
 
    

@@ -14,3 +14,6 @@ class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     register = SubmitField('Sign up')
 
+class JoinNowForm(FlaskForm):
+    join = SubmitField("Join Now")
+    

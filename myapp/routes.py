@@ -6,10 +6,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from myapp import myobj
 from myapp import db
 from myapp.loginforms import LoginForm
-from myapp.deleteforms import DeleteForm
+from myapp.deleteforms import DeleteForm,DeleteEventForm
 from myapp.eventforms import EventForm
 from myapp.models import User, Event
-from myapp.registerforms import RegisterForm
+from myapp.registerforms import RegisterForm, JoinNowForm
 from flask import render_template, escape, flash, redirect,request, send_file
 from flask_login import UserMixin,login_user,LoginManager,login_required,logout_user,current_user
 from datetime import datetime
@@ -41,9 +41,10 @@ def login():
     form = LoginForm()
     # if the user hit submit on the forms page
     if form.validate_on_submit():
-        email = form.email.data
+        #email = form.email.data
+        username = form.username.data
         password = form.password_hash.data
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username = username).first()
         if user != None:
             passed = check_password_hash(user.password_hash,password)
             if passed == True:
@@ -54,7 +55,7 @@ def login():
         else:
             flash('User doesn not exit, try agian!')
             return redirect('/login')
-        return redirect('/home')
+        return redirect('/event')
     return render_template('login.html',form=form)
 
 @myobj.route("/logout", methods=['GET', 'POST'])
@@ -172,4 +173,10 @@ def delete_account():
             flash('Wrong Information, Please Try Agian!')
             return redirect('/delete')
     return render_template('/delete.html', form = form)
+@myobj.route("/dashboard", methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template('/dashboard.html')
+
+
 

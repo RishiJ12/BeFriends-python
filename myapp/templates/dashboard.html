@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<link href = "{{url_for('static',filename='css/dashboard.css')}}" rel="stylesheet">
+
+<body>
+    
+    <div id = 'container'>
+        <div class = 'left'>
+            <h2>Current Friends</h2>
+            <div class = 'myfriends'>
+                <p>friend1</p>
+                
+            </div>  
+            <div class = 'myfriends'>
+                <p>friend1</p>
+                
+            </div>
+            <div class = 'myfriends'>
+                <p>friend1</p>
+                
+            </div>
+
+        </div>
+
+        <div class = 'right'>
+            <h2 style="display:inline;">Current Events</h2>
+            <div class = 'myfriends'>
+                <p>Event1</p>
+                
+            </div>  
+            <div class = 'myfriends'>
+                <p>Event2</p>
+                
+            </div>
+            <div class = 'myfriends'>
+                <p>Event 3</p>
+                
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+{% endblock %}
