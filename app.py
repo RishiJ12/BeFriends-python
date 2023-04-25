@@ -1,20 +1,51 @@
+from datetime import datetime
+from flask_login.mixins import UserMixin
+from sqlalchemy.orm import backref
+
 from os import error
 from re import S
 from flask import escape
 from sqlalchemy.orm import session
 from werkzeug.security import check_password_hash, generate_password_hash
-from myapp import myobj
-from myapp import db
-from myapp.loginforms import LoginForm
-from myapp.deleteforms import DeleteForm,DeleteEventForm
-from myapp.eventforms import EventForm
-from myapp.models import User, Event
-from myapp.registerforms import RegisterForm, JoinNowForm
+
+from form import LoginForm,DeleteForm,DeleteEventForm,EventForm,RegisterForm, JoinNowForm
 from flask import render_template, escape, flash, redirect,request, send_file
 from flask_login import UserMixin,login_user,LoginManager,login_required,logout_user,current_user
-from datetime import datetime
 from io import BytesIO
-#from werkzeug.utils import secure_filename
+from flask import Flask
+import os
+basedir = os.path.abspath(os.path.dirname(__file__))
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_migrate import Migrate
+from flask_ckeditor import CKEditor
+
+
+# create Flask class object named myobj
+myobj = Flask(__name__,static_url_path="", static_folder="static")
+ckeditor =  CKEditor(myobj)
+
+# Flask login manager
+login_manager = LoginManager()
+login_manager.init_app(myobj)
+login_manager.login_view = 'login'
+
+
+myobj.config.from_mapping(
+    SECRET_KEY = 'you-will-know',
+    # location of sqlite database
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db'),
+    SQLALCHEMY_TRACK_MODIFICATIONS = False,
+    
+)
+
+db = SQLAlchemy(myobj)
+migrate = Migrate(myobj,db)
+with myobj.app_context():
+    db.create_all()
+
+
+#routes
 
 @myobj.route("/")
 def home():
@@ -179,4 +210,34 @@ def dashboard():
     return render_template('/dashboard.html')
 
 
+
+# models
+class User(db.Model, UserMixin):
+   
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), index=True, unique=True)
+    email = db.Column(db.String(128), index=True, unique=True)
+    password_hash =db.Column(db.String(128))
+    def __repr__(self):
+        return f'<{self.id} {self.username}  {self.email}  {self.password_hash}>'
+    
+class Event(db.Model):
+   
+    id = db.Column(db.Integer, primary_key=True)
+    eventName = db.Column(db.String(128))
+    className = db.Column(db.String(128))
+    description = db.Column(db.Text(1256))
+    location = db.Column(db.String(128))
+    date = db.Column(db.String(128))
+    date_created = db.Column(db.DateTime,default = datetime.utcnow)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable = False)
+
+ #Returns a string as a representation of the object.
+    def __repr__(self):
+        return f'<{self.eventName}  {self.text} >'
+   
+@login_manager.user_loader
+def load_user(id):
+    
+    return User.query.get(int(id))
 
